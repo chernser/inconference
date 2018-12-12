@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="gtest"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\tools\;CMake Files\..\..\tools\googletest\;CMake Files\..\..\tools\googletest\googletest\;CMake Files\..\..\tools\googletest\googletest\cmake\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/schernov/proj/inconference/googletest/build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main">
+				<Option output="/Users/schernov/proj/inconference/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/schernov/proj/inconference/googletest/build"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_USE_OWN_TR1_TUPLE"/>
+					<Add option="-D__GLIBCXX__"/>
+					<Add directory="/Users/schernov/tools/googletest/googletest/include"/>
+					<Add directory="/Users/schernov/tools/googletest/googletest"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 gtest_main"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main/fast">
+				<Option output="/Users/schernov/proj/inconference/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/schernov/proj/inconference/googletest/build"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_USE_OWN_TR1_TUPLE"/>
+					<Add option="-D__GLIBCXX__"/>
+					<Add directory="/Users/schernov/tools/googletest/googletest/include"/>
+					<Add directory="/Users/schernov/tools/googletest/googletest"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest">
+				<Option output="/Users/schernov/proj/inconference/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/schernov/proj/inconference/googletest/build"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_USE_OWN_TR1_TUPLE"/>
+					<Add option="-D__GLIBCXX__"/>
+					<Add directory="/Users/schernov/tools/googletest/googletest/include"/>
+					<Add directory="/Users/schernov/tools/googletest/googletest"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest/fast">
+				<Option output="/Users/schernov/proj/inconference/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/schernov/proj/inconference/googletest/build"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGTEST_USE_OWN_TR1_TUPLE"/>
+					<Add option="-D__GLIBCXX__"/>
+					<Add directory="/Users/schernov/tools/googletest/googletest/include"/>
+					<Add directory="/Users/schernov/tools/googletest/googletest"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/schernov/proj/inconference/googletest/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/schernov/tools/googletest/googletest/src/gtest-all.cc">
+			<Option target="gtest"/>
+		</Unit>
+		<Unit filename="/Users/schernov/tools/googletest/googletest/src/gtest_main.cc">
+			<Option target="gtest_main"/>
+		</Unit>
+		<Unit filename="/Users/schernov/proj/inconference/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/schernov/proj/inconference/../../tools/googletest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\..\..\tools\googletest\googletest\"/>
+		</Unit>
+		<Unit filename="/Users/schernov/proj/inconference/../../tools/googletest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\..\..\tools\googletest\googletest\cmake\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
