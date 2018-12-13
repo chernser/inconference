@@ -1,5 +1,8 @@
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+include_directories(${GTEST_ROOT}/include ${GTEST_ROOT})
 
+find_package(GTest REQUIRED)
+
+link_directories(${GTEST_ROOT}/../lib)
 
 if (APPLE)
     add_definitions(-DGTEST_USE_OWN_TR1_TUPLE)

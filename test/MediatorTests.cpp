@@ -21,10 +21,10 @@ auto bufferFactory = shared_ptr<BufferFactory>(new BufferFactory());
 TEST(MediatorTest, addEndpoint_removeEndpoint) {
     auto mediator = std::make_unique<Mediator>(bufferFactory);
 
-    auto endpoint2 = shared_ptr<Endpoint>(new Endpoint("endpoint2"));
+    auto endpoint2 = shared_ptr<Endpoint>(new Endpoint("endpoint2", true));
     {
-        auto endpoint1 = shared_ptr<Endpoint>(new Endpoint("endpoint1"));
-        auto endpoint3 = shared_ptr<Endpoint>(new Endpoint("endpoint3"));
+        auto endpoint1 = shared_ptr<Endpoint>(new Endpoint("endpoint1", true));
+        auto endpoint3 = shared_ptr<Endpoint>(new Endpoint("endpoint3", true));
 
 
         mediator->addEndpoint(endpoint1);

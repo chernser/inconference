@@ -39,7 +39,7 @@ namespace Endpoints {
 
     private:
 
-        u_short state = 0;
+        u_int8_t state = 0;
     };
 
     /**
@@ -51,6 +51,7 @@ namespace Endpoints {
 
 
     public:
+
         explicit Endpoint(string name, bool isLocal);
 
         const string &getName() const;
