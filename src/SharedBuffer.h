@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <cstdint>
 
+#include <iostream>
+
 
 using namespace std;
 
@@ -20,8 +22,40 @@ namespace Memory {
     class Buffer {
     public:
         explicit Buffer() {}
-
         virtual ~Buffer() = default;
+
+        /**
+         * Reads single byte from buffer. Not to be used for copying data from one mem block to another.
+         * Read position is incremented by 1;
+         * @return byte
+         */
+        virtual uint8_t read() = 0;
+
+        /**
+         * Copies content of the buffer (check @link Buffer#capacity())
+         *
+         * @param dest
+         */
+        virtual void copy(uint8_t *dest) = 0;
+
+        /**
+         * Writes one byte. Not to be used for copying data from one mem block to another
+         * @param byte
+         */
+        virtual void write(uint8_t byte) = 0;
+
+        /**
+         * Copies chunk of data from src start of offset position and ends after copying len bytes
+         *
+         * @param src - source mem block
+         * @param offset - offset from the source mem block
+         * @param len - length to copy
+         * @return
+         */
+        virtual void copyFrom(uint8_t *src, uint32_t offset, uint32_t len) = 0;
+
+        virtual uint32_t capacity() = 0;
+
     protected:
     };
 
@@ -36,6 +70,9 @@ namespace Memory {
             buffer = new uint8_t[size];
         }
 
+        ~ LocalBuffer(){
+            cout << "local buffer is destroyed\n";
+        }
 
         uint8_t read() {
             readPosition++;
@@ -52,8 +89,8 @@ namespace Memory {
             writePosition < size ? buffer[writePosition] = byte : throw out_of_range("Buffer ended");
         }
 
-        uint32_t copyFrom(uint8_t *src) {
-            memcpy(buffer, src, size);
+        void copyFrom(uint8_t *src, uint32_t offset, uint32_t len) {
+            memcpy(buffer, src + offset, len);
         }
 
         uint32_t capacity() {
@@ -89,19 +126,27 @@ namespace Memory {
 
         uint32_t getBufferSize() { return size; };
 
-        uint32_t getBorrowedCount() {};
-
-        uint32_t getAllocatedCount() {};
-
+        uint32_t getAvailableCount() {
+            return buffers.size() +
+                    (maxTotalSize / size - ((uint32_t)buffers.size() + borrowedCount));
+        }
     private:
 
         void init();
+        bool canAddMore();
 
         uint32_t size;
-        uint32_t initialCount;
-        uint32_t maxTotalSize;
+        const uint32_t initialCount;
+        const uint32_t maxTotalSize;
 
+        /**
+         * Free buffers.
+         * buffers are taken from front, returns to back
+         */
         std::deque<shared_ptr<Buffer>> buffers;
+
+        volatile uint32_t borrowedCount;
+
     };
 
 

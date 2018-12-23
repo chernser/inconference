@@ -12,13 +12,14 @@ namespace Memory {
 
 
     FixedSizeBufferPool::FixedSizeBufferPool(uint32_t size, uint32_t initialCount, uint32_t maxTotalSize) :
-            size(size), initialCount(initialCount), maxTotalSize(maxTotalSize), buffers() {
+            size(size), initialCount(initialCount), maxTotalSize(maxTotalSize), buffers(), borrowedCount(0) {
         init();
     }
 
     void FixedSizeBufferPool::init() {
         auto pageSize = static_cast<uint32_t >(sysconf(_SC_PAGE_SIZE));
-        size = size - (size % pageSize) + pageSize;
+        uint32_t sizeReminder = size % pageSize;
+        size = sizeReminder != 0 ? size - sizeReminder + pageSize : size;
         if (initialCount * size > maxTotalSize) throw std::invalid_argument("size * initialCount > maxTotalSize");
 
         for (uint32_t  i = 0; i < initialCount; i++) {
@@ -28,22 +29,29 @@ namespace Memory {
 
     shared_ptr<Buffer> FixedSizeBufferPool::borrow() {
         if (buffers.empty()) {
-            throw std::exception();
-        }
+            if (!canAddMore()) {
+                throw std::underflow_error("buffer pool underflow");
+            }
 
+            buffers.push_back(shared_ptr<Buffer>(new LocalBuffer(size)));
+        }
 
         auto freeBuffer = buffers.front();
         buffers.pop_front();
+        borrowedCount++;
 
         return freeBuffer;
     }
 
     void FixedSizeBufferPool::release(shared_ptr<Buffer> buffer) {
-
-        if ((buffers.size() + 1) * size > maxTotalSize) {
-            // do nothing
-        } else {
+        if (borrowedCount > 0) {
+            borrowedCount--;
             buffers.push_back(buffer);
         }
+    }
+
+    bool FixedSizeBufferPool::canAddMore()
+    {
+        return (borrowedCount + buffers.size() + 1) * size <= maxTotalSize;
     }
 }
