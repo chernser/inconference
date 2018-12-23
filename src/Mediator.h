@@ -43,12 +43,14 @@ namespace Mediation {
      *
      *
      */
+#define DEFAULT_BUFFER_SIZE (1024 * 1024 * 2)
     class Mediator {
 
-        const u_int64_t DEFAULT_BUFFER_SIZE = 1024 * 1024;
+
 
     public:
-        Mediator(const shared_ptr<Memory::BufferFactory> &bufferFactory);
+
+        Mediator(const shared_ptr<Memory::FixedSizeBufferPool> bufferPool);
 
         void addEndpoint(shared_ptr<Endpoints::Endpoint> endpoint);
 
@@ -72,7 +74,7 @@ namespace Mediation {
 
 
     private:
-        shared_ptr<Memory::BufferFactory> bufferFactory;
+        shared_ptr<Memory::FixedSizeBufferPool> bufferPool;
         std::set<shared_ptr<Endpoints::Endpoint>> endpoints;
         std::unordered_map<std::string, shared_ptr<Memory::Buffer>> endpointInputBuffers;
     };

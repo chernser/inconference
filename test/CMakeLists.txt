@@ -9,6 +9,6 @@ if (APPLE)
     add_definitions(-D__GLIBCXX__)
 endif (APPLE)
 
-add_executable(inconferenceTests  MediatorTests.cpp)
+add_executable(inconferenceTests  MediatorTests.cpp SharedBufferTests.cpp)
 
 target_link_libraries(inconferenceTests inconference gtest_main )
