@@ -11,16 +11,26 @@ namespace Mediation {
 
 
     Mediator::Mediator(const shared_ptr<Memory::FixedSizeBufferPool> bufferPool) : bufferPool(bufferPool),
-        endpoints(), endpointInputBuffers() {}
-
+                                                                                   endpoints(), listeners() {}
     void Mediator::addEndpoint(shared_ptr<Endpoints::Endpoint> endpoint) {
-        endpoints.insert(endpoint);
-        endpointInputBuffers.insert(
-                std::make_pair(endpoint->getName(), bufferPool->borrow()));
+        endpoints.insert(
+                std::make_pair(endpoint->getName(), new EndpointHolder({
+                                                                               endpoint, bufferPool->borrow()
+                                                                       })));
     }
 
     void Mediator::removeEndpoint(shared_ptr<Endpoints::Endpoint> endpoint) {
-        endpoints.erase(endpoint);
+        auto item = endpoints.find(endpoint->getName());
+        if (item != endpoints.end()) {
+            auto inputBuffer = ((shared_ptr<struct EndpointHolder>)(*item).second)->inputBuffer;
+            bufferPool->release(inputBuffer);
+            endpoints.erase(item);
+        }
+
+    }
+
+    void Mediator::addListener(const Mediation::MediatorListener *listener) {
+        listeners.insert(listeners.begin(), listener);
     }
 
     void Mediator::start() {
@@ -31,22 +41,12 @@ namespace Mediation {
 
     }
 
-    const set<shared_ptr<Endpoints::Endpoint>> &Mediator::getEndpoints() const {
-        return endpoints;
+    Mixer::Mixer() : listeners() {}
+
+    void Mixer::addListener(MixerListener *listener) {
+        listeners.insert(listeners.begin(), listener);
     }
 
-    void Mediator::poll() {
-        for (const auto &endpoint : endpoints) {
-            if (endpoint->isLocal() && endpoint->getEndpointState().hasNewData()) {
-                auto inputBuffer = endpointInputBuffers.find(endpoint->getName());
-                // TODO: read from endpoint 
-            }
-        }
-    }
-
-    void Mediator::push() {
-
-    }
 
 }
 

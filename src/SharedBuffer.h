@@ -104,6 +104,7 @@ namespace Memory {
         uint8_t *buffer;
     };
 
+
     class FixedSizeBufferPool {
 
     public:
@@ -127,8 +128,8 @@ namespace Memory {
         uint32_t getBufferSize() { return size; };
 
         uint32_t getAvailableCount() {
-            return buffers.size() +
-                    (maxTotalSize / size - ((uint32_t)buffers.size() + borrowedCount));
+            return static_cast<uint32_t>(buffers.size() +
+                                         (maxTotalSize / size - ((uint32_t)buffers.size() + borrowedCount)));
         }
     private:
 
@@ -138,6 +139,7 @@ namespace Memory {
         uint32_t size;
         const uint32_t initialCount;
         const uint32_t maxTotalSize;
+
 
         /**
          * Free buffers.

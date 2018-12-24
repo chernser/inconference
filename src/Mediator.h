@@ -9,6 +9,7 @@
 #include <zconf.h>
 #include <set>
 #include <unordered_map>
+#include <vector>
 
 #include "SharedBuffer.h"
 #include "Endpoint.h"
@@ -17,8 +18,36 @@
 namespace Mediation {
 
 
+    class MixerListener {
+
+    public:
+        virtual void onOutFrameReady(std::vector<shared_ptr<Endpoints::Endpoint>> forEndpoints) = 0;
+
+    };
+
+    class Mixer {
+
+    public:
+
+        Mixer();
+
+        void addListener(MixerListener *listener);
+
+    private:
+        std::vector<MixerListener *> listeners;
+    };
 
 
+    class MediatorListener {
+
+    public:
+        virtual void onEdnpointAdded(shared_ptr<Endpoints::Endpoint> endpoint) = 0;
+
+        virtual void onEndpointRemoved(shared_ptr<Endpoints::Endpoint> endpoint) = 0;
+
+        virtual void onDataFrameReady(shared_ptr<Endpoints::Endpoint> endpoint,
+                                      shared_ptr<Memory::Buffer> inputBuffer) = 0;
+    };
     /**
      * Each mediator works with single distribution task.
      * If it is conference application, than one mediator handles one conference.
@@ -44,9 +73,8 @@ namespace Mediation {
      *
      */
 #define DEFAULT_BUFFER_SIZE (1024 * 1024 * 2)
+
     class Mediator {
-
-
 
     public:
 
@@ -56,27 +84,27 @@ namespace Mediation {
 
         void removeEndpoint(shared_ptr<Endpoints::Endpoint> endpoint);
 
-        const set<shared_ptr<Endpoints::Endpoint>> &getEndpoints() const;
+        void addListener(const MediatorListener *listener);
 
         void start();
 
         void stop();
 
-        /*
-         * Polls information from ready endpoints
-         */
-        void poll();
+        void doReadData();
 
-        /**
-         * Pushes data to endpoints
-         */
-        void push();
-
+        void doWriteData();
 
     private:
+
+        struct EndpointHolder {
+            shared_ptr<Endpoints::Endpoint> endpoint;
+            shared_ptr<Memory::Buffer> inputBuffer;
+        };
         shared_ptr<Memory::FixedSizeBufferPool> bufferPool;
-        std::set<shared_ptr<Endpoints::Endpoint>> endpoints;
-        std::unordered_map<std::string, shared_ptr<Memory::Buffer>> endpointInputBuffers;
+
+        std::unordered_map<std::string, shared_ptr<struct EndpointHolder>> endpoints;
+
+        std::vector<MediatorListener *> listeners;
     };
 
 }
