@@ -19,7 +19,7 @@ namespace Mediation {
 
     Mediator::Mediator(const shared_ptr<Memory::FixedSizeBufferPool> bufferPool) : bufferPool(bufferPool),
                                                                                    endpoints() {
-        this->endpointsIter = endpoints.cend();
+        this->endpointsIter = endpoints.end();
     }
 
     void Mediator::addEndpoint(shared_ptr<Endpoints::Endpoint> endpoint) {
@@ -39,28 +39,35 @@ namespace Mediation {
 
     }
 
-
     void Mediator::doIteration() {
 
         if (endpoints.size() == 0) {
             return;
         }
 
-        if (endpoints.cend() == endpointsIter) {
-            endpointsIter = endpoints.cbegin();
+        if (endpoints.end() == endpointsIter) {
+            endpointsIter = endpoints.begin();
         }
 
         auto endpoint = endpointsIter->second->endpoint;
         if (!endpoint->getEndpointState().isConnected()) {
-            // TODO: remove endpoint - mediator do not care about not connected endpoints
-        } else if (!endpoint->isLocal() && endpoint->getEndpointState().hasNewData()) {
-            // TODO: notify others
+            endpointsIter = endpoints.erase(endpointsIter);
+        } else if (endpoint->getEndpointState().isReadFinished()) {
+            for (auto notifyIter = endpoints.cbegin(); notifyIter != endpoints.cend(); ++notifyIter) {
+                if (notifyIter != endpointsIter) {
+                    notifyIter->second->endpoint->otherSideReady(endpointsIter->second->endpoint,
+                                                                 endpointsIter->second->inputBuffer,
+                                                                 endpointsIter->second->readyBytes);
+                }
+            }
+            // TODO: reset state into waiting data
         } else if (endpoint->isLocal() && endpoint->getEndpointState().hasNewData()) {
-            // TODO: read data to input buffer
-            // if got enough data - notify others
-        } else if (endpoint->isLocal() && endpoint->getEndpointState().hasNewData()) {
-
+            auto inputBuffer = endpointsIter->second->inputBuffer;
+            auto readBytes = endpoint->readToBuffer(inputBuffer);
+            endpointsIter->second->readyBytes = readBytes;
         }
+
+        ++endpointsIter;
     }
 
 }

@@ -22,6 +22,3 @@ bool Endpoints::Endpoint::isLocal() const {
     return local;
 }
 
-void Endpoints::Endpoint::otherSideReady(shared_ptr<Endpoints::Endpoint> otherEndpoint, shared_ptr<Buffer> buffer) {
-
-}

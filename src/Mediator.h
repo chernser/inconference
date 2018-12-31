@@ -41,12 +41,13 @@ namespace Mediation {
         struct EndpointHolder {
             shared_ptr<Endpoints::Endpoint> endpoint;
             shared_ptr<Memory::Buffer> inputBuffer;
+            uint32_t readyBytes;
         };
         shared_ptr<Memory::FixedSizeBufferPool> bufferPool;
 
         std::unordered_map<std::string, shared_ptr<struct EndpointHolder>> endpoints;
 
-        std::unordered_map<std::string, shared_ptr<struct EndpointHolder>>::const_iterator endpointsIter;
+        std::unordered_map<std::string, shared_ptr<struct EndpointHolder>>::iterator endpointsIter;
     };
 
 }
