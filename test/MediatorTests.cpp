@@ -27,7 +27,6 @@ TEST(MediatorTest, addEndpoint_removeEndpoint) {
         auto endpoint1 = shared_ptr<Endpoint>(new Endpoint("endpoint1", true));
         auto endpoint3 = shared_ptr<Endpoint>(new Endpoint("endpoint3", true));
 
-
         mediator->addEndpoint(endpoint1);
         mediator->addEndpoint(endpoint2);
         mediator->addEndpoint(endpoint3);
@@ -35,7 +34,7 @@ TEST(MediatorTest, addEndpoint_removeEndpoint) {
 
 
     {
-        GTEST_ASSERT_EQ(3, mediator->getEndpoints().size());
+        GTEST_ASSERT_EQ(3, mediator->getNumberOfEndpoints());
     }
 
     {
@@ -43,9 +42,8 @@ TEST(MediatorTest, addEndpoint_removeEndpoint) {
     }
 
     {
-        GTEST_ASSERT_EQ(2, mediator->getEndpoints().size());
+        GTEST_ASSERT_EQ(2, mediator->getNumberOfEndpoints());
     }
-
 }
 
 

@@ -1,6 +1,8 @@
 #!/bin/sh
 
 GTEST_DIR=/Users/schernov/tools/googletest/googletest/
+CC=gcc 
+CXX=g++
 
 cmake . \
     -DGTEST_LIBRARY=${GTEST_DIR} \

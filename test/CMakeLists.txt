@@ -11,4 +11,4 @@ endif (APPLE)
 
 add_executable(inconferenceTests  MediatorTests.cpp SharedBufferTests.cpp)
 
-target_link_libraries(inconferenceTests inconference gtest_main )
+target_link_libraries(inconferenceTests inconference gtest gtest_main )

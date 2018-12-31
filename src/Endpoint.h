@@ -7,7 +7,10 @@
 
 #include <string>
 
+#include "SharedBuffer.h"
+
 using namespace std;
+using namespace Memory;
 
 namespace Endpoints {
 
@@ -57,6 +60,8 @@ namespace Endpoints {
         const string &getName() const;
 
         bool isLocal() const;
+
+        virtual void otherSideReady(shared_ptr<Endpoint> otherEndpoint, shared_ptr<Buffer> buffer) ;
 
         const EndpointState &getEndpointState() const;
 
