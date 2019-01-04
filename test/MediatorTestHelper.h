@@ -51,6 +51,10 @@ public:
         return inBuffer;
     }
 
+    ~SimpleTestEndpoint() override {
+        
+    }
+
 private:
 
     shared_ptr<uint8_t> localBuffer;

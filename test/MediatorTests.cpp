@@ -18,7 +18,7 @@ using namespace Endpoints;
 using namespace Memory;
 
 auto bufferFactory = shared_ptr<FixedSizeBufferPool>(
-        new FixedSizeBufferPool(DEFAULT_BUFFER_SIZE, 1, DEFAULT_BUFFER_SIZE * 100));
+        new FixedSizeBufferPool(DEFAULT_BUFFER_SIZE, 10, DEFAULT_BUFFER_SIZE * 100));
 
 
 TEST(MediatorTest, addEndpoint_removeEndpoint) {

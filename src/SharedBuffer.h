@@ -22,6 +22,7 @@ namespace Memory {
     class Buffer {
     public:
         explicit Buffer() {}
+
         virtual ~Buffer() = default;
 
         /**
@@ -70,8 +71,7 @@ namespace Memory {
             buffer = new uint8_t[size];
         }
 
-        ~ LocalBuffer(){
-            cout << "local buffer is destroyed\n";
+        ~ LocalBuffer() {
         }
 
         uint8_t read() {
@@ -104,7 +104,6 @@ namespace Memory {
         uint8_t *buffer;
     };
 
-
     class FixedSizeBufferPool {
 
     public:
@@ -129,11 +128,13 @@ namespace Memory {
 
         uint32_t getAvailableCount() {
             return static_cast<uint32_t>(buffers.size() +
-                                         (maxTotalSize / size - ((uint32_t)buffers.size() + borrowedCount)));
+                                         (maxTotalSize / size - ((uint32_t) buffers.size() + borrowedCount)));
         }
+
     private:
 
         void init();
+
         bool canAddMore();
 
         uint32_t size;

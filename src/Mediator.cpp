@@ -14,57 +14,79 @@ using namespace Endpoints;
  * Mediator does only one thing - collect data and notifies others about its readiness
  *
  */
-namespace Mediation {
+namespace Mediation
+{
 
-
-    Mediator::Mediator(const shared_ptr<Memory::FixedSizeBufferPool> bufferPool) : bufferPool(bufferPool),
-                                                                                   endpoints() {
+    Mediator::Mediator(const shared_ptr<Memory::FixedSizeBufferPool> bufferPool) :
+            bufferPool(bufferPool), endpoints()
+    {
         this->endpointsIter = endpoints.end();
     }
 
-    void Mediator::addEndpoint(shared_ptr<Endpoints::Endpoint> endpoint) {
-        endpoints.insert(
-                std::make_pair(endpoint->getName(), new EndpointHolder({
-                                                                               endpoint, bufferPool->borrow()
-                                                                       })));
+    void Mediator::addEndpoint(shared_ptr<Endpoints::Endpoint> endpoint)
+    {
+        endpoints.insert(std::make_pair(endpoint->getName(), new EndpointHolder(
+        { endpoint, bufferPool->borrow(), bufferPool->borrow() })));
     }
 
-    void Mediator::removeEndpoint(shared_ptr<Endpoints::Endpoint> endpoint) {
+    void Mediator::removeEndpoint(shared_ptr<Endpoints::Endpoint> endpoint)
+    {
         auto item = endpoints.find(endpoint->getName());
-        if (item != endpoints.end()) {
-            auto inputBuffer = ((shared_ptr<struct EndpointHolder>) (*item).second)->inputBuffer;
-            bufferPool->release(inputBuffer);
+        if (item != endpoints.end())
+        {
+            auto endpointHolder = ((*item).second).get();
+            bufferPool->release(endpointHolder->inputBufferA);
+            bufferPool->release(endpointHolder->inputBufferB);
             endpoints.erase(item);
         }
 
     }
 
-    void Mediator::doIteration() {
+    void Mediator::doIteration()
+    {
 
-        if (endpoints.size() == 0) {
+        if (endpoints.size() == 0)
+        {
             return;
         }
 
-        if (endpoints.end() == endpointsIter) {
+        if (endpoints.end() == endpointsIter)
+        {
             endpointsIter = endpoints.begin();
         }
 
         auto endpoint = endpointsIter->second->endpoint;
-        if (!endpoint->getEndpointState().isConnected()) {
+        if (!endpoint->getEndpointState().isConnected())
+        {
             endpointsIter = endpoints.erase(endpointsIter);
-        } else if (endpoint->getEndpointState().isReadFinished()) {
-            for (auto notifyIter = endpoints.cbegin(); notifyIter != endpoints.cend(); ++notifyIter) {
-                if (notifyIter != endpointsIter) {
-                    notifyIter->second->endpoint->otherSideReady(endpointsIter->second->endpoint,
-                                                                 endpointsIter->second->inputBuffer,
-                                                                 endpointsIter->second->readyBytes);
+        }
+        else if (endpoint->getEndpointState().isReadFinished())
+        {
+            /**
+             * There is no more data from prev. frame - buffers swaped.
+             */
+            for (auto notifyIter = endpoints.cbegin();
+                    notifyIter != endpoints.cend(); ++notifyIter)
+            {
+                if (notifyIter != endpointsIter)
+                {
+                    notifyIter->second->endpoint->otherSideReady(
+                            endpointsIter->second->endpoint,
+                            endpointsIter->second->inputBufferB,
+                            endpointsIter->second->readyBytes);
                 }
             }
-            // TODO: reset state into waiting data
-        } else if (endpoint->isLocal() && endpoint->getEndpointState().hasNewData()) {
-            auto inputBuffer = endpointsIter->second->inputBuffer;
+        }
+        else if (endpoint->isLocal()
+                && endpoint->getEndpointState().hasNewData())
+        {
+            auto inputBuffer = endpointsIter->second->inputBufferA;
             auto readBytes = endpoint->readToBuffer(inputBuffer);
             endpointsIter->second->readyBytes = readBytes;
+            if (endpoint->getEndpointState().isReadFinished())
+            {
+                Mediator::flipInputBuffers(endpointsIter->second.get());
+            }
         }
 
         ++endpointsIter;
