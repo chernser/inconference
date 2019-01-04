@@ -12,7 +12,8 @@
 using namespace std;
 using namespace Memory;
 
-namespace Endpoints {
+namespace Endpoints
+{
 
 #define ENDPOINT_STATE_CONNECTING 1
 #define ENDPOINT_STATE_CONNECTED 2
@@ -20,12 +21,13 @@ namespace Endpoints {
 #define ENDPOINT_STATE_HAS_DATA_TO_READ 8
 #define ENDPOINT_STATE_BUSY_WRITING 16
 
-
-    class EndpointState {
+    class EndpointState
+    {
 
     public:
 
-        void setState(u_int8_t state) {
+        void setState(u_int8_t state)
+        {
             this->state = state;
         }
 
@@ -35,7 +37,8 @@ namespace Endpoints {
          * @return true - if connected
          *         false - if not connected
          */
-        bool isConnected() const {
+        bool isConnected() const
+        {
             return (state & ENDPOINT_STATE_CONNECTED) != 0;
         }
 
@@ -45,10 +48,10 @@ namespace Endpoints {
          * @return true - if there is some data for reading
          *         false - if there is no new data for reading
          */
-        bool hasNewData() const {
+        bool hasNewData() const
+        {
             return (state & ENDPOINT_STATE_HAS_DATA_TO_READ) != 0;
         }
-
 
         /**
          * Determines if reading of the current chunk is finished
@@ -57,10 +60,10 @@ namespace Endpoints {
          * @return true - if data is read completely
          *         false - if data reading is not completed
          */
-        bool isReadFinished() const {
+        bool isReadFinished() const
+        {
             return (state & ENDPOINT_STATE_DATA_CHUNK_COMPLETE) != 0;
         }
-
 
     private:
 
@@ -72,8 +75,8 @@ namespace Endpoints {
      * Instance holds state of the endpoint
      *
      */
-    class Endpoint {
-
+    class Endpoint
+    {
 
     public:
 
@@ -83,14 +86,22 @@ namespace Endpoints {
 
         bool isLocal() const;
 
-        virtual void
-        otherSideReady(shared_ptr<Endpoint> otherEndpoint, shared_ptr<Buffer> buffer, uint32_t readyBytes) {};
+        virtual void otherSideReady(shared_ptr<Endpoint> otherEndpoint,
+                shared_ptr<Buffer> buffer, uint32_t readyBytes)
+        {
+        }
+        ;
 
-        virtual uint32_t readToBuffer(shared_ptr<Buffer> buffer) { return 0; };
+        virtual uint32_t readToBuffer(shared_ptr<Buffer> buffer)
+        {
+            return 0;
+        }
+        ;
 
         const EndpointState &getEndpointState() const;
 
-        void setState(u_int8_t state) {
+        void setState(u_int8_t state)
+        {
             endpointState.setState(state);
         }
 
@@ -103,7 +114,6 @@ namespace Endpoints {
 
         bool local;
     };
-
 
 }
 

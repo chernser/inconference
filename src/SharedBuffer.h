@@ -13,15 +13,17 @@
 
 #include <iostream>
 
-
 using namespace std;
 
-namespace Memory {
+namespace Memory
+{
 
-
-    class Buffer {
+    class Buffer
+    {
     public:
-        explicit Buffer() {}
+        explicit Buffer()
+        {
+        }
 
         virtual ~Buffer() = default;
 
@@ -63,37 +65,46 @@ namespace Memory {
     /**
      * Represents local buffer
      */
-    class LocalBuffer : public Buffer {
-
+    class LocalBuffer: public Buffer
+    {
 
     public:
-        LocalBuffer(uint32_t size) {
+        LocalBuffer(uint32_t size)
+        {
             buffer = new uint8_t[size];
         }
 
-        ~ LocalBuffer() {
+        ~ LocalBuffer()
+        {
         }
 
-        uint8_t read() {
+        uint8_t read()
+        {
             readPosition++;
-            return readPosition < size ? buffer[readPosition] : throw out_of_range("Buffer ended");
+            return readPosition < size ?
+                    buffer[readPosition] : throw out_of_range("Buffer ended");
         }
 
-
-        void copy(uint8_t *dest) {
+        void copy(uint8_t *dest)
+        {
             memcpy(dest, buffer, size);
         }
 
-        void write(uint8_t byte) {
+        void write(uint8_t byte)
+        {
             writePosition++;
-            writePosition < size ? buffer[writePosition] = byte : throw out_of_range("Buffer ended");
+            writePosition < size ?
+                    buffer[writePosition] = byte :
+                    throw out_of_range("Buffer ended");
         }
 
-        void copyFrom(uint8_t *src, uint32_t offset, uint32_t len) {
+        void copyFrom(uint8_t *src, uint32_t offset, uint32_t len)
+        {
             memcpy(buffer, src + offset, len);
         }
 
-        uint32_t capacity() {
+        uint32_t capacity()
+        {
             return size;
         }
 
@@ -104,7 +115,8 @@ namespace Memory {
         uint8_t *buffer;
     };
 
-    class FixedSizeBufferPool {
+    class FixedSizeBufferPool
+    {
 
     public:
 
@@ -116,19 +128,28 @@ namespace Memory {
          * @param initialCount - initial number of buffers
          * @param maxTotalSize - max total size of buffers allocated by pool
          */
-        explicit FixedSizeBufferPool(uint32_t size, uint32_t initialCount, uint32_t maxTotalSize);
+        explicit FixedSizeBufferPool(uint32_t size, uint32_t initialCount,
+                uint32_t maxTotalSize);
 
-        ~FixedSizeBufferPool() {}
+        ~FixedSizeBufferPool()
+        {
+        }
 
         shared_ptr<Buffer> borrow();
 
         void release(shared_ptr<Buffer> buffer);
 
-        uint32_t getBufferSize() { return size; };
+        uint32_t getBufferSize()
+        {
+            return size;
+        }
+        ;
 
-        uint32_t getAvailableCount() {
-            return static_cast<uint32_t>(buffers.size() +
-                                         (maxTotalSize / size - ((uint32_t) buffers.size() + borrowedCount)));
+        uint32_t getAvailableCount()
+        {
+            return static_cast<uint32_t>(buffers.size()
+                    + (maxTotalSize / size
+                            - ((uint32_t) buffers.size() + borrowedCount)));
         }
 
     private:
@@ -141,7 +162,6 @@ namespace Memory {
         const uint32_t initialCount;
         const uint32_t maxTotalSize;
 
-
         /**
          * Free buffers.
          * buffers are taken from front, returns to back
@@ -151,7 +171,6 @@ namespace Memory {
         volatile uint32_t borrowedCount;
 
     };
-
 
 }
 #endif //INCONFERENCE_SHAREDBUFFER_H

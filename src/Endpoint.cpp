@@ -4,21 +4,24 @@
 
 #include "Endpoint.h"
 
-
-Endpoints::Endpoint::Endpoint(const std::string name, bool isLocal) : name(name), endpointState(),
-                                                                      local(isLocal) {
+Endpoints::Endpoint::Endpoint(const std::string name, bool isLocal) :
+        name(name), endpointState(), local(isLocal)
+{
 
 }
 
-const std::string &Endpoints::Endpoint::getName() const {
+const std::string &Endpoints::Endpoint::getName() const
+{
     return name;
 }
 
-const Endpoints::EndpointState &Endpoints::Endpoint::getEndpointState() const {
+const Endpoints::EndpointState &Endpoints::Endpoint::getEndpointState() const
+{
     return endpointState;
 }
 
-bool Endpoints::Endpoint::isLocal() const {
+bool Endpoints::Endpoint::isLocal() const
+{
     return local;
 }
 
