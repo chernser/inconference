@@ -163,33 +163,6 @@ Endpoint.cpp.s:
 	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/Endpoint.cpp.s
 .PHONY : Endpoint.cpp.s
 
-LowLevelNetworkEndpoint.o: LowLevelNetworkEndpoint.cpp.o
-
-.PHONY : LowLevelNetworkEndpoint.o
-
-# target to build an object file
-LowLevelNetworkEndpoint.cpp.o:
-	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/LowLevelNetworkEndpoint.cpp.o
-.PHONY : LowLevelNetworkEndpoint.cpp.o
-
-LowLevelNetworkEndpoint.i: LowLevelNetworkEndpoint.cpp.i
-
-.PHONY : LowLevelNetworkEndpoint.i
-
-# target to preprocess a source file
-LowLevelNetworkEndpoint.cpp.i:
-	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/LowLevelNetworkEndpoint.cpp.i
-.PHONY : LowLevelNetworkEndpoint.cpp.i
-
-LowLevelNetworkEndpoint.s: LowLevelNetworkEndpoint.cpp.s
-
-.PHONY : LowLevelNetworkEndpoint.s
-
-# target to generate assembly for a file
-LowLevelNetworkEndpoint.cpp.s:
-	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/LowLevelNetworkEndpoint.cpp.s
-.PHONY : LowLevelNetworkEndpoint.cpp.s
-
 Mediator.o: Mediator.cpp.o
 
 .PHONY : Mediator.o
@@ -244,6 +217,33 @@ SharedBuffer.cpp.s:
 	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/SharedBuffer.cpp.s
 .PHONY : SharedBuffer.cpp.s
 
+SystemIO.o: SystemIO.cpp.o
+
+.PHONY : SystemIO.o
+
+# target to build an object file
+SystemIO.cpp.o:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/SystemIO.cpp.o
+.PHONY : SystemIO.cpp.o
+
+SystemIO.i: SystemIO.cpp.i
+
+.PHONY : SystemIO.i
+
+# target to preprocess a source file
+SystemIO.cpp.i:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/SystemIO.cpp.i
+.PHONY : SystemIO.cpp.i
+
+SystemIO.s: SystemIO.cpp.s
+
+.PHONY : SystemIO.s
+
+# target to generate assembly for a file
+SystemIO.cpp.s:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/SystemIO.cpp.s
+.PHONY : SystemIO.cpp.s
+
 library.o: library.cpp.o
 
 .PHONY : library.o
@@ -284,15 +284,15 @@ help:
 	@echo "... Endpoint.o"
 	@echo "... Endpoint.i"
 	@echo "... Endpoint.s"
-	@echo "... LowLevelNetworkEndpoint.o"
-	@echo "... LowLevelNetworkEndpoint.i"
-	@echo "... LowLevelNetworkEndpoint.s"
 	@echo "... Mediator.o"
 	@echo "... Mediator.i"
 	@echo "... Mediator.s"
 	@echo "... SharedBuffer.o"
 	@echo "... SharedBuffer.i"
 	@echo "... SharedBuffer.s"
+	@echo "... SystemIO.o"
+	@echo "... SystemIO.i"
+	@echo "... SystemIO.s"
 	@echo "... library.o"
 	@echo "... library.i"
 	@echo "... library.s"

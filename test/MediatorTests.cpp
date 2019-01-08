@@ -1,5 +1,3 @@
-#include <memory>
-
 //
 // Created by Sergey Chernov on 2018-12-05.
 //
@@ -22,7 +20,7 @@ auto bufferFactory = shared_ptr<FixedSizeBufferPool>(
 
 
 TEST(MediatorTest, addEndpoint_removeEndpoint) {
-    auto mediator = std::make_unique<Mediator>(bufferFactory);
+    auto mediator = std::unique_ptr<Mediator>(new Mediator(bufferFactory));
 
     auto endpoint2 = shared_ptr<Endpoint>(new Endpoint("endpoint2", true));
     {
@@ -50,7 +48,7 @@ TEST(MediatorTest, addEndpoint_removeEndpoint) {
 
 
 TEST(MediatorTest, doIteration_localEndpoints) {
-    auto mediator = std::make_unique<Mediator>(bufferFactory);
+    auto mediator = std::unique_ptr<Mediator>(new Mediator(bufferFactory));
 
     auto endpoint1 = shared_ptr<SimpleTestEndpoint>(new SimpleTestEndpoint("ep1"));
     auto endpoint2 = shared_ptr<SimpleTestEndpoint>(new SimpleTestEndpoint("ep2"));

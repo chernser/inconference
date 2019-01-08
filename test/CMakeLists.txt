@@ -10,6 +10,10 @@ if (APPLE)
     add_definitions(-D__GLIBCXX__)
 endif (APPLE)
 
-add_executable(inconferenceTests  MediatorTests.cpp SharedBufferTests.cpp MediatorTestHelper.h)
+add_executable(inconferenceTests  
+	MediatorTests.cpp 
+	SharedBufferTests.cpp
+	FDSelectorTests.cpp
+	MediatorTestHelper.h)
 
 target_link_libraries(inconferenceTests inconference gtest gtest_main event_core${LIB_EVENT_CORE_VERSION} )

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 project(inconference)
 enable_testing()
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 11)
 
 
 include_directories(BEFORE SYSTEM ${LIB_EVENT_DIR}/include)

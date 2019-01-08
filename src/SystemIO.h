@@ -11,6 +11,7 @@
 #include <event2/event.h>
 #include <unordered_map>
 #include <memory>
+#include <functional>
 
 using namespace std;
 
@@ -44,7 +45,7 @@ class    FDSelector
 
         void notifyFDStateChanged(FileDescriptor fd, FDEventType eventType);
 
-        virtual void addFileDescriptor(FileDescriptor fd) = 0;
+        virtual void addFileDescriptor(FileDescriptor fd, std::function<void(FileDescriptor fd, FDEventType)> cb) = 0;
         virtual void removeFileDescriptor(FileDescriptor fd) = 0;
         virtual void wakeUp() = 0;
 
@@ -52,7 +53,7 @@ class    FDSelector
         struct FdWrapper
         {
             event *event;
-            onFDStateChangeCallback stateCallback;
+            std::function<void(FileDescriptor fd, FDEventType)> stateCallback;
         };
         unordered_map<FileDescriptor, shared_ptr<struct FdWrapper>> fdEventMap;
     };
@@ -71,7 +72,7 @@ class    FDSelector
             event_base_free(eventBase);
         }
 
-        void addFileDescriptor(FileDescriptor fd) override;
+        void addFileDescriptor(FileDescriptor fd, std::function<void(FileDescriptor fd, FDEventType)> cb) override;
         void removeFileDescriptor(FileDescriptor fd) override;
         void wakeUp() override;
 

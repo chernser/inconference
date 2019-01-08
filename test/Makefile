@@ -136,6 +136,33 @@ inconferenceTests/fast:
 	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/build
 .PHONY : inconferenceTests/fast
 
+FDSelectorTests.o: FDSelectorTests.cpp.o
+
+.PHONY : FDSelectorTests.o
+
+# target to build an object file
+FDSelectorTests.cpp.o:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/FDSelectorTests.cpp.o
+.PHONY : FDSelectorTests.cpp.o
+
+FDSelectorTests.i: FDSelectorTests.cpp.i
+
+.PHONY : FDSelectorTests.i
+
+# target to preprocess a source file
+FDSelectorTests.cpp.i:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/FDSelectorTests.cpp.i
+.PHONY : FDSelectorTests.cpp.i
+
+FDSelectorTests.s: FDSelectorTests.cpp.s
+
+.PHONY : FDSelectorTests.s
+
+# target to generate assembly for a file
+FDSelectorTests.cpp.s:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/FDSelectorTests.cpp.s
+.PHONY : FDSelectorTests.cpp.s
+
 MediatorTests.o: MediatorTests.cpp.o
 
 .PHONY : MediatorTests.o
@@ -200,6 +227,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... test"
 	@echo "... inconferenceTests"
+	@echo "... FDSelectorTests.o"
+	@echo "... FDSelectorTests.i"
+	@echo "... FDSelectorTests.s"
 	@echo "... MediatorTests.o"
 	@echo "... MediatorTests.i"
 	@echo "... MediatorTests.s"
