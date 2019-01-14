@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 project(inconference)
 enable_testing()
 
+add_compile_options("-std=c++11")
 set(CMAKE_CXX_STANDARD 11)
 
 

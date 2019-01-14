@@ -41,7 +41,7 @@ namespace SysIO
             std::function<void(FileDescriptor fd, FDEventType)> cb)
     {
         auto event = event_new(this->eventBase, fd, EV_READ | EV_WRITE,
-                (event_callback_fn) LibEventFDSelector::eventCallback, this);
+                (event_callback_fn) &LibEventFDSelector::eventCallback, this);
 
         if (event_add(event, NULL) == 0)
         {
@@ -73,7 +73,7 @@ namespace SysIO
 
     void LibEventFDSelector::wakeUp()
     {
-        event_base_loop(eventBase, EVENT_BASE_FLAG_NOLOCK);
+        event_base_loop(eventBase, 0);
     }
 
     void LibEventFDSelector::eventCallback(int fd, short event,
