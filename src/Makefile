@@ -163,6 +163,33 @@ Endpoint.cpp.s:
 	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/Endpoint.cpp.s
 .PHONY : Endpoint.cpp.s
 
+GenericServer.o: GenericServer.cpp.o
+
+.PHONY : GenericServer.o
+
+# target to build an object file
+GenericServer.cpp.o:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/GenericServer.cpp.o
+.PHONY : GenericServer.cpp.o
+
+GenericServer.i: GenericServer.cpp.i
+
+.PHONY : GenericServer.i
+
+# target to preprocess a source file
+GenericServer.cpp.i:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/GenericServer.cpp.i
+.PHONY : GenericServer.cpp.i
+
+GenericServer.s: GenericServer.cpp.s
+
+.PHONY : GenericServer.s
+
+# target to generate assembly for a file
+GenericServer.cpp.s:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/GenericServer.cpp.s
+.PHONY : GenericServer.cpp.s
+
 Mediator.o: Mediator.cpp.o
 
 .PHONY : Mediator.o
@@ -284,6 +311,9 @@ help:
 	@echo "... Endpoint.o"
 	@echo "... Endpoint.i"
 	@echo "... Endpoint.s"
+	@echo "... GenericServer.o"
+	@echo "... GenericServer.i"
+	@echo "... GenericServer.s"
 	@echo "... Mediator.o"
 	@echo "... Mediator.i"
 	@echo "... Mediator.s"

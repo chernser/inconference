@@ -1,8 +1,10 @@
 
 
-add_library(inconference SHARED library.cpp library.h
-			 Mediator.cpp Mediator.h 
+add_library(inconference SHARED 			  
 			 Endpoint.cpp Endpoint.h 
+			 GenericServer.cpp GenericServer.h
+			 library.cpp library.h
+			 Mediator.cpp Mediator.h
 			 SharedBuffer.cpp SharedBuffer.h
 			 SystemIO.cpp SystemIO.h 
 			)
