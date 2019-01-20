@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <functional>
 #include <unistd.h>
+#include <fcntl.h>
 
 #include "GenericServer.h"
 
@@ -50,12 +51,22 @@ namespace GenServer
             return GENSERV_INTERNAL_ERR;
         }
 
+        int sFlags = ::fcntl(s, F_GETFL);
+        if ( sFlags == -1) {
+            return GENSERV_INTERNAL_ERR;
+        }
+        err = fcntl(s, F_SETFL, sFlags | O_NONBLOCK );
+        if ( err == -1) {
+            return GENSERV_INTERNAL_ERR;
+        }
+
+
         struct sockaddr_in sockAddr;
         memset(&sockAddr, 0, sizeof(struct sockaddr_in));
         sockAddr.sin_len = (__uint8_t ) sizeof(struct sockaddr_in);
         sockAddr.sin_family = AF_INET;
         sockAddr.sin_port = htons(port);
-        sockAddr.sin_addr.s_addr = inet_addr(address.c_str());
+        sockAddr.sin_addr.s_addr = INADDR_ANY;// inet_addr(address.c_str());
 
         err = ::bind(s, (struct sockaddr *) &sockAddr, sizeof(sockAddr));
         if (err == -1)
@@ -106,9 +117,10 @@ namespace GenServer
 
     uint16_t GenericServer::nextReadableClient(FileDescriptor* fd)
     {
-        if (readyForRead.size() > 0)
+        if (!readyForRead.empty())
         {
-            *fd = readyForRead.pop();
+            *fd = readyForRead.top();
+            readyForRead.pop();
             return GENSERV_OK;
         }
 
@@ -118,9 +130,10 @@ namespace GenServer
     uint16_t GenericServer::nextWritableClient(FileDescriptor* fd)
     {
 
-        if (readyForWrite.size() > 0)
+        if (!readyForWrite.empty())
         {
-            *fd = readyForWrite.pop();
+            *fd = readyForWrite.top();
+            readyForWrite.pop();
             return GENSERV_OK;
         }
 

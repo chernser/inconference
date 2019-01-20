@@ -163,6 +163,33 @@ FDSelectorTests.cpp.s:
 	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/FDSelectorTests.cpp.s
 .PHONY : FDSelectorTests.cpp.s
 
+GenericServerTests.o: GenericServerTests.cpp.o
+
+.PHONY : GenericServerTests.o
+
+# target to build an object file
+GenericServerTests.cpp.o:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/GenericServerTests.cpp.o
+.PHONY : GenericServerTests.cpp.o
+
+GenericServerTests.i: GenericServerTests.cpp.i
+
+.PHONY : GenericServerTests.i
+
+# target to preprocess a source file
+GenericServerTests.cpp.i:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/GenericServerTests.cpp.i
+.PHONY : GenericServerTests.cpp.i
+
+GenericServerTests.s: GenericServerTests.cpp.s
+
+.PHONY : GenericServerTests.s
+
+# target to generate assembly for a file
+GenericServerTests.cpp.s:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/GenericServerTests.cpp.s
+.PHONY : GenericServerTests.cpp.s
+
 MediatorTests.o: MediatorTests.cpp.o
 
 .PHONY : MediatorTests.o
@@ -230,6 +257,9 @@ help:
 	@echo "... FDSelectorTests.o"
 	@echo "... FDSelectorTests.i"
 	@echo "... FDSelectorTests.s"
+	@echo "... GenericServerTests.o"
+	@echo "... GenericServerTests.i"
+	@echo "... GenericServerTests.s"
 	@echo "... MediatorTests.o"
 	@echo "... MediatorTests.i"
 	@echo "... MediatorTests.s"
