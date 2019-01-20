@@ -43,9 +43,10 @@ TEST(selecting_fd, libeven_singleThread_2_fds)
 
     printf("f1 no %d\n", f1no);
 
-    selector->addFileDescriptor(f1no,
+    function<void(FileDescriptor fd, FDEventType)> callback =
             std::bind(&SelectorCallback::onFDStateChangeCallback,
-                    selectorCallback.get(), _1, _2));
+            selectorCallback.get(), _1, _2);
+    selector->addFileDescriptor(f1no, callback);
 //    selector->addFileDescriptor(f2no,
 //            (onFDStateChangeCallback) &SelectorCallback::onFDStateChangeCallback);
 

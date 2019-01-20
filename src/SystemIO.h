@@ -22,11 +22,11 @@ namespace SysIO
 
     enum FDEventType
     {
-        FD_SEL_BECAME_READABLE = 1, FD_SEL_BECAME_WRITABLE
+        FD_SEL_BECAME_READABLE = 1, FD_SEL_BECAME_WRITABLE,
+        FD_SEL_TIMEOUT
     };
 
-    typedef void (*onFDStateChangeCallback(FileDescriptor fd,
-            FDEventType eventType));
+    typedef void (onFDStateChangeCallback(FileDescriptor fd, FDEventType eventType));
 
 class    FDSelector
     {
@@ -45,7 +45,8 @@ class    FDSelector
 
         void notifyFDStateChanged(FileDescriptor fd, FDEventType eventType);
 
-        virtual void addFileDescriptor(FileDescriptor fd, std::function<void(FileDescriptor fd, FDEventType)> cb) = 0;
+//        virtual void addFileDescriptor(FileDescriptor fd, std::function<void(FileDescriptor fd, FDEventType)> cb) = 0;
+        virtual void addFileDescriptor(FileDescriptor fd, std::function<onFDStateChangeCallback> cb) = 0;
         virtual void removeFileDescriptor(FileDescriptor fd) = 0;
         virtual void wakeUp() = 0;
 
@@ -72,7 +73,7 @@ class    FDSelector
             event_base_free(eventBase);
         }
 
-        void addFileDescriptor(FileDescriptor fd, std::function<void(FileDescriptor fd, FDEventType)> cb) override;
+        void addFileDescriptor(FileDescriptor fd, std::function<onFDStateChangeCallback> cb) override;
         void removeFileDescriptor(FileDescriptor fd) override;
         void wakeUp() override;
 

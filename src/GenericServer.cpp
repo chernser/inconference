@@ -9,13 +9,21 @@
 #include <sys/sockio.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <errno.h>
+#include <functional>
+#include <unistd.h>
+
 #include "GenericServer.h"
+
+using namespace std;
+using namespace placeholders;
 
 namespace GenServer
 {
 
-    GenericServer::GenericServer(string address, uint16_t port, shared_ptr<FDSelector> selector) :
-            address(address), port(port), serverSocket(-1), selector(selector)
+    GenericServer::GenericServer(string address, uint16_t port,
+            shared_ptr<FDSelector> selector) :
+            address(address), port(port), serverSocket(-1), selector(selector), readyForRead(), readyForWrite()
     {
 
     }
@@ -25,9 +33,8 @@ namespace GenServer
         // TODO Auto-generated destructor stub
     }
 
-    uint16_t GenericServer::run()
+    uint16_t GenericServer::start()
     {
-
         int s = socket(AF_INET, SOCK_STREAM, 0);
         if (s == -1)
         {
@@ -50,13 +57,13 @@ namespace GenServer
         sockAddr.sin_port = htons(port);
         sockAddr.sin_addr.s_addr = inet_addr(address.c_str());
 
-        err = bind(s, (struct sockaddr *) &sockAddr, sizeof(sockAddr));
+        err = ::bind(s, (struct sockaddr *) &sockAddr, sizeof(sockAddr));
         if (err == -1)
         {
             return GENSERV_ADDR_IN_USE;
         }
 
-        err = listen(s, 1000);
+        err = listen(s, 500);
         if (err == -1)
         {
             return GENSERV_INTERNAL_ERR;
@@ -64,9 +71,85 @@ namespace GenServer
 
         this->serverSocket = s;
 
-//        selector->addFileDescriptor(this->serverSocket, )
+        return GENSERV_OK;
+    }
 
-        return GENSERV_RUN_OK;
+    uint16_t GenericServer::acceptConnection(FileDescriptor *fd)
+    {
+        struct sockaddr_in clientSockAddr;
+        memset(&clientSockAddr, 0, sizeof(struct sockaddr_in));
+        unsigned int size = 0;
+        int clientSocket = accept(serverSocket,
+                (struct sockaddr *) &clientSockAddr, &size);
+
+        if (clientSocket == -1)
+        {
+            if (errno == EWOULDBLOCK)
+            {
+                // no connections
+                return GENSERV_EMPTY_RESULT;
+            }
+            else
+            {
+                return GENSERV_INTERNAL_ERR;
+            }
+        }
+
+        selector->addFileDescriptor(clientSocket,
+                std::bind(&GenericServer::onClientSocketEvent, this, _1, _2));
+        if (fd != NULL)
+        {
+            *fd = clientSocket;
+        }
+        return GENSERV_OK;
+    }
+
+    uint16_t GenericServer::nextReadableClient(FileDescriptor* fd)
+    {
+        if (readyForRead.size() > 0)
+        {
+            *fd = readyForRead.pop();
+            return GENSERV_OK;
+        }
+
+        return GENSERV_EMPTY_RESULT;
+    }
+
+    uint16_t GenericServer::nextWritableClient(FileDescriptor* fd)
+    {
+
+        if (readyForWrite.size() > 0)
+        {
+            *fd = readyForWrite.pop();
+            return GENSERV_OK;
+        }
+
+        return GENSERV_EMPTY_RESULT;
+    }
+
+    uint16_t GenericServer::stop()
+    {
+        int err = ::close(this->serverSocket);
+        if (err == -1)
+        {
+            return GENSERV_INTERNAL_ERR;
+        }
+
+        return GENSERV_OK;
+    }
+
+    void GenericServer::onClientSocketEvent(FileDescriptor fd,
+            FDEventType eventType)
+    {
+        switch (eventType)
+        {
+        case FD_SEL_BECAME_READABLE:
+            readyForRead.push(fd);
+            break;
+        case FD_SEL_BECAME_WRITABLE:
+            readyForWrite.push(fd);
+            break;
+        }
     }
 
 } /* namespace Endpoints */

@@ -6,6 +6,8 @@
  */
 
 #include "SystemIO.h"
+
+#include <event2/event.h>
 #include <memory>
 #include <unordered_map>
 #include <functional>
@@ -38,7 +40,7 @@ namespace SysIO
     }
 
     void LibEventFDSelector::addFileDescriptor(FileDescriptor fd,
-            std::function<void(FileDescriptor fd, FDEventType)> cb)
+            std::function<onFDStateChangeCallback> cb)
     {
         auto event = event_new(this->eventBase, fd, EV_READ | EV_WRITE,
                 (event_callback_fn) &LibEventFDSelector::eventCallback, this);
@@ -79,15 +81,15 @@ namespace SysIO
     void LibEventFDSelector::eventCallback(int fd, short event,
             FDSelector* selector)
     {
+        short evEvents[] = { EV_READ, EV_WRITE, EV_TIMEOUT};
+        FDEventType fdEvents[] =
+        { FD_SEL_BECAME_READABLE, FD_SEL_BECAME_WRITABLE, FD_SEL_TIMEOUT };
+        int size = sizeof(evEvents) / sizeof(evEvents[0]);
 
-        if ((event & EV_READ) != 0)
-        {
-            selector->notifyFDStateChanged(fd, FD_SEL_BECAME_READABLE);
-        }
-
-        if ((event & EV_WRITE) != 0)
-        {
-            selector->notifyFDStateChanged(fd, FD_SEL_BECAME_WRITABLE);
+        for (int i = 0; i < size; i++) {
+            if ((event & evEvents[i]) != 0) {
+                selector->notifyFDStateChanged(fd, fdEvents[i]);
+            }
         }
     }
 
