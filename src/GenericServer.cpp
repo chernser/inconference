@@ -52,21 +52,22 @@ namespace GenServer
         }
 
         int sFlags = ::fcntl(s, F_GETFL);
-        if ( sFlags == -1) {
+        if (sFlags == -1)
+        {
             return GENSERV_INTERNAL_ERR;
         }
-        err = fcntl(s, F_SETFL, sFlags | O_NONBLOCK );
-        if ( err == -1) {
+        err = fcntl(s, F_SETFL, sFlags | O_NONBLOCK);
+        if (err == -1)
+        {
             return GENSERV_INTERNAL_ERR;
         }
-
 
         struct sockaddr_in sockAddr;
         memset(&sockAddr, 0, sizeof(struct sockaddr_in));
         sockAddr.sin_len = (__uint8_t ) sizeof(struct sockaddr_in);
         sockAddr.sin_family = AF_INET;
         sockAddr.sin_port = htons(port);
-        sockAddr.sin_addr.s_addr = INADDR_ANY;// inet_addr(address.c_str());
+        sockAddr.sin_addr.s_addr = INADDR_ANY; // inet_addr(address.c_str());
 
         err = ::bind(s, (struct sockaddr *) &sockAddr, sizeof(sockAddr));
         if (err == -1)
@@ -117,6 +118,12 @@ namespace GenServer
 
     uint16_t GenericServer::nextReadableClient(FileDescriptor* fd)
     {
+        if (!std::try_to_lock(readyForReadMutex))
+        {
+            return GENSERV_EMPTY_RESULT;
+        }
+
+        std::lock_guard(readyForReadMutex);
         if (!readyForRead.empty())
         {
             *fd = readyForRead.top();
@@ -129,6 +136,12 @@ namespace GenServer
 
     uint16_t GenericServer::nextWritableClient(FileDescriptor* fd)
     {
+        if (!std::try_to_lock(readyForWriteMutex))
+        {
+            return GENSERV_EMPTY_RESULT;
+        }
+
+        std::lock_guard(readyForWriteMutex);
 
         if (!readyForWrite.empty())
         {
@@ -157,11 +170,17 @@ namespace GenServer
         switch (eventType)
         {
         case FD_SEL_BECAME_READABLE:
+        {
+            std::lock_guard(readyForReadMutex);
             readyForRead.push(fd);
             break;
+        }
         case FD_SEL_BECAME_WRITABLE:
+        {
+            std::lock_guard(readyForWriteMutex);
             readyForWrite.push(fd);
             break;
+        }
         }
     }
 

@@ -10,6 +10,8 @@
 
 #include <string>
 #include <stack>
+#include <mutex>
+
 #include "SystemIO.h"
 
 using namespace std;
@@ -23,6 +25,32 @@ namespace GenServer
 #define GENSERV_ADDR_IN_USE 1001
 #define GENSERV_INTERNAL_ERR 1002
 
+    /**
+     * Represents generic server methods.
+     * Current implementation is not completely thread-safe.
+     *
+     * Method #acceptConnection doesn't acquire any lock to guard fd selector.
+     * this is done to minimize number of locks.
+     *
+     * How server loop should be organized to avoid locking:
+     *
+     * Thread 1: main
+     *  1 acceptConnection()
+     *  2 selector.wakeUp()
+     *
+     * Thread 2: reader
+     *  1 nextReadableClient(&fd)
+     *  2 process(&fd)
+     *
+     *
+     *
+     * One thread does control job - it accepts connections and wakes up selector.
+     * If acceptor thread is different - there should be lock,
+     * so selector is not called from different threads
+     *
+     * Another threads can safely get next client descriptors for processing.
+     *
+     */
     class GenericServer
     {
 
@@ -43,8 +71,20 @@ namespace GenServer
          */
         uint16_t acceptConnection(FileDescriptor *fd);
 
+        /**
+         * Returns next readable client socket.
+         *
+         * @param fd - pointer to memory into which client descriptor will be written
+         * @synchronized
+         */
         uint16_t nextReadableClient(FileDescriptor *fd);
 
+        /**
+         * Returns next writable client socket.
+         *
+         * @param fd - pointer to memory into which client descriptor will be written
+         * @synchronized
+         */
         uint16_t nextWritableClient(FileDescriptor *fd);
 
         uint16_t stop();
@@ -59,6 +99,8 @@ namespace GenServer
 
         int serverSocket;
         shared_ptr<FDSelector> selector;
+        std::recursive_mutex readyForReadMutex;
+        std::recursive_mutex readyForWriteMutex;
         std::stack<FileDescriptor> readyForRead;
         std::stack<FileDescriptor> readyForWrite;
     };

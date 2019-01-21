@@ -22,13 +22,18 @@ namespace SysIO
 
     enum FDEventType
     {
-        FD_SEL_BECAME_READABLE = 1, FD_SEL_BECAME_WRITABLE,
-        FD_SEL_TIMEOUT
+        FD_SEL_BECAME_READABLE = 1, FD_SEL_BECAME_WRITABLE, FD_SEL_TIMEOUT
     };
 
-    typedef void (onFDStateChangeCallback(FileDescriptor fd, FDEventType eventType));
+    typedef void (onFDStateChangeCallback(FileDescriptor fd,
+            FDEventType eventType));
 
-class    FDSelector
+    /**
+     * Implements file descriptor selection.
+     * If not stated explicitly - FDSelector is _NOT_ thread safe.
+     * It is done to let library clients implement whatever locking logic they need.
+     */
+class FDSelector
     {
 
     public:
@@ -46,7 +51,8 @@ class    FDSelector
         void notifyFDStateChanged(FileDescriptor fd, FDEventType eventType);
 
 //        virtual void addFileDescriptor(FileDescriptor fd, std::function<void(FileDescriptor fd, FDEventType)> cb) = 0;
-        virtual void addFileDescriptor(FileDescriptor fd, std::function<onFDStateChangeCallback> cb) = 0;
+        virtual void addFileDescriptor(FileDescriptor fd,
+                std::function<onFDStateChangeCallback> cb) = 0;
         virtual void removeFileDescriptor(FileDescriptor fd) = 0;
         virtual void wakeUp() = 0;
 
@@ -73,7 +79,8 @@ class    FDSelector
             event_base_free(eventBase);
         }
 
-        void addFileDescriptor(FileDescriptor fd, std::function<onFDStateChangeCallback> cb) override;
+        void addFileDescriptor(FileDescriptor fd,
+                std::function<onFDStateChangeCallback> cb) override;
         void removeFileDescriptor(FileDescriptor fd) override;
         void wakeUp() override;
 
