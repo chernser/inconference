@@ -64,10 +64,10 @@ TEST(single_threaded_server, full_cicle)
 {
     auto fdSelector = LibEventFDSelector();
 
-    auto server = GenericServer("127.0.0.1", 65002,
-            std::shared_ptr<FDSelector>(&fdSelector));
+    auto server = std::unique_ptr<GenericServer>(new GenericServer("127.0.0.1", 65002,
+            std::shared_ptr<FDSelector>(&fdSelector)));
 
-    ASSERT_EQ(GENSERV_OK, server.start());
+    ASSERT_EQ(GENSERV_OK, server->start());
 
     printf("Server started\n");
     int clientFd1 = connect_client();
@@ -76,7 +76,7 @@ TEST(single_threaded_server, full_cicle)
 
     printf("Connecting client on server side\n");
     int acceptedFd = -1;
-    while (server.acceptConnection(&acceptedFd) == GENSERV_EMPTY_RESULT)
+    while (server->acceptConnection(&acceptedFd) == GENSERV_EMPTY_RESULT)
     {
 
     }
@@ -89,12 +89,12 @@ TEST(single_threaded_server, full_cicle)
     write(clientFd1, (void*) msg, 5);
 
     fdSelector.wakeUp();
-    int readableFd = -1;
-    server.nextReadableClient(&readableFd);
+    int readableFd = -1;    
+    server->nextReadableClient(&readableFd);
     printf("Readable fd: %d\n", readableFd);
     ASSERT_EQ(readableFd, acceptedFd);
 
-    ASSERT_EQ(GENSERV_OK, server.stop());
+    ASSERT_EQ(GENSERV_OK, server->stop());
 
     printf("Test done\n");
 }

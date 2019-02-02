@@ -33,7 +33,7 @@ namespace SysIO
      * If not stated explicitly - FDSelector is _NOT_ thread safe.
      * It is done to let library clients implement whatever locking logic they need.
      */
-class FDSelector
+class    FDSelector
     {
 
     public:

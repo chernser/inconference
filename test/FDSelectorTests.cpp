@@ -9,9 +9,9 @@
 #include <stdio.h>
 #include <functional>
 
-#include "../src/SystemIO.h"
-
 #include "gtest/gtest.h"
+
+#include "../src/SystemIO.h"
 
 using namespace SysIO;
 using namespace placeholders;

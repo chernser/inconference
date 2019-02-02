@@ -55,8 +55,8 @@ namespace GenServer
     {
 
     public:
-        GenericServer(string address, uint16_t port,
-                shared_ptr<FDSelector> selector);
+        GenericServer() {};
+        GenericServer(string address, uint16_t port, shared_ptr<FDSelector> selector);
         virtual ~GenericServer();
 
         /**

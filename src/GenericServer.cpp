@@ -22,11 +22,12 @@ using namespace placeholders;
 namespace GenServer
 {
 
-    GenericServer::GenericServer(string address, uint16_t port,
-            shared_ptr<FDSelector> selector) :
-            address(address), port(port), serverSocket(-1), selector(selector), readyForRead(), readyForWrite()
+    GenericServer::GenericServer(string address, uint16_t port, shared_ptr<FDSelector> selector) 
     {
-
+        this->selector = selector;
+        this->address = address;
+        this->port = port;
+        serverSocket = -1;
     }
 
     GenericServer::~GenericServer()
@@ -118,12 +119,13 @@ namespace GenServer
 
     uint16_t GenericServer::nextReadableClient(FileDescriptor* fd)
     {
-        if (!std::try_to_lock(readyForReadMutex))
+        
+        if (!readyForReadMutex.try_lock())
         {
             return GENSERV_EMPTY_RESULT;
         }
 
-        std::lock_guard(readyForReadMutex);
+        std::lock_guard<std::recursive_mutex>(this->readyForReadMutex);        
         if (!readyForRead.empty())
         {
             *fd = readyForRead.top();
@@ -136,13 +138,12 @@ namespace GenServer
 
     uint16_t GenericServer::nextWritableClient(FileDescriptor* fd)
     {
-        if (!std::try_to_lock(readyForWriteMutex))
+        if (!readyForWriteMutex.try_lock())
         {
             return GENSERV_EMPTY_RESULT;
         }
 
-        std::lock_guard(readyForWriteMutex);
-
+        std::lock_guard<std::recursive_mutex>(this->readyForWriteMutex);
         if (!readyForWrite.empty())
         {
             *fd = readyForWrite.top();
@@ -171,13 +172,13 @@ namespace GenServer
         {
         case FD_SEL_BECAME_READABLE:
         {
-            std::lock_guard(readyForReadMutex);
+            std::lock_guard<std::recursive_mutex>(this->readyForReadMutex);
             readyForRead.push(fd);
             break;
         }
         case FD_SEL_BECAME_WRITABLE:
         {
-            std::lock_guard(readyForWriteMutex);
+            std::lock_guard<std::recursive_mutex>(this->readyForWriteMutex);
             readyForWrite.push(fd);
             break;
         }

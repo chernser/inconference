@@ -136,6 +136,33 @@ inconference/fast:
 	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/build
 .PHONY : inconference/fast
 
+BasicHttpd.o: BasicHttpd.cpp.o
+
+.PHONY : BasicHttpd.o
+
+# target to build an object file
+BasicHttpd.cpp.o:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/BasicHttpd.cpp.o
+.PHONY : BasicHttpd.cpp.o
+
+BasicHttpd.i: BasicHttpd.cpp.i
+
+.PHONY : BasicHttpd.i
+
+# target to preprocess a source file
+BasicHttpd.cpp.i:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/BasicHttpd.cpp.i
+.PHONY : BasicHttpd.cpp.i
+
+BasicHttpd.s: BasicHttpd.cpp.s
+
+.PHONY : BasicHttpd.s
+
+# target to generate assembly for a file
+BasicHttpd.cpp.s:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f src/CMakeFiles/inconference.dir/build.make src/CMakeFiles/inconference.dir/BasicHttpd.cpp.s
+.PHONY : BasicHttpd.cpp.s
+
 Endpoint.o: Endpoint.cpp.o
 
 .PHONY : Endpoint.o
@@ -308,6 +335,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... test"
 	@echo "... inconference"
+	@echo "... BasicHttpd.o"
+	@echo "... BasicHttpd.i"
+	@echo "... BasicHttpd.s"
 	@echo "... Endpoint.o"
 	@echo "... Endpoint.i"
 	@echo "... Endpoint.s"
