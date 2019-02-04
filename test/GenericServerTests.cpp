@@ -60,7 +60,7 @@ int connect_client()
     return sock;
 }
 
-TEST(single_threaded_server, full_cicle)
+TEST(single_threaded_server, full_cycle)
 {
     auto fdSelector = LibEventFDSelector();
 
@@ -93,9 +93,9 @@ TEST(single_threaded_server, full_cicle)
     server->nextReadableClient(&readableFd);
     printf("Readable fd: %d\n", readableFd);
     ASSERT_EQ(readableFd, acceptedFd);
-
     ASSERT_EQ(GENSERV_OK, server->stop());
 
+    
     printf("Test done\n");
 }
 

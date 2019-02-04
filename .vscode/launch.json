@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "(lldb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/Users/chernser/proj/inconference/test/inconferenceTests",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+              { "name": "DYLD_LIBRARY_PATH", "value": "/Users/chernser/tools/libevent-2.0.21-stable/.libs/"}  
+            ],            
+            "externalConsole": true,
+            "MIMode": "lldb"
+        }
+    ]
+}

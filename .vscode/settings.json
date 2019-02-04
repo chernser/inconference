@@ -58,6 +58,8 @@
         "ostream": "cpp",
         "set": "cpp",
         "streambuf": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "list": "cpp",
+        "queue": "cpp"
     }
 }

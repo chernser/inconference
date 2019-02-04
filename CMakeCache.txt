@@ -228,7 +228,7 @@ GTEST_MAIN_LIBRARY_DEBUG:FILEPATH=GTEST_MAIN_LIBRARY_DEBUG-NOTFOUND
 GTEST_ROOT:UNINITIALIZED=/Users/chernser/tools/googletest-master/googletest/
 
 //No help, variable specified on the command line.
-LIB_EVENT_CORE_VERSION:UNINITIALIZED=-2.0.5
+LIB_EVENT_CORE_VERSION:UNINITIALIZED=-2.1.6
 
 //No help, variable specified on the command line.
 LIB_EVENT_DIR:UNINITIALIZED=/Users/chernser/tools/libevent-2.0.21-stable/

@@ -11,5 +11,6 @@ add_library(inconference SHARED
 			 SharedBuffer.cpp SharedBuffer.h
 			 SystemIO.cpp SystemIO.h
 			 BasicHttpd.cpp BasicHttpd.h
+			 utils.cpp utils.h
 			)
-target_link_libraries(inconference event_core${LIB_EVENT_CORE_VERSION})			
+target_link_libraries(inconference event_core)			

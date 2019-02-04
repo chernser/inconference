@@ -17,4 +17,4 @@ add_executable(inconferenceTests
 	MediatorTestHelper.h
 	GenericServerTests.cpp)
 
-target_link_libraries(inconferenceTests inconference gtest gtest_main event_core${LIB_EVENT_CORE_VERSION} )
+target_link_libraries(inconferenceTests inconference gtest gtest_main event_core )
