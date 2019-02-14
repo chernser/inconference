@@ -244,6 +244,33 @@ SharedBufferTests.cpp.s:
 	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/SharedBufferTests.cpp.s
 .PHONY : SharedBufferTests.cpp.s
 
+utilsTests.o: utilsTests.cpp.o
+
+.PHONY : utilsTests.o
+
+# target to build an object file
+utilsTests.cpp.o:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/utilsTests.cpp.o
+.PHONY : utilsTests.cpp.o
+
+utilsTests.i: utilsTests.cpp.i
+
+.PHONY : utilsTests.i
+
+# target to preprocess a source file
+utilsTests.cpp.i:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/utilsTests.cpp.i
+.PHONY : utilsTests.cpp.i
+
+utilsTests.s: utilsTests.cpp.s
+
+.PHONY : utilsTests.s
+
+# target to generate assembly for a file
+utilsTests.cpp.s:
+	cd /Users/chernser/proj/inconference && $(MAKE) -f test/CMakeFiles/inconferenceTests.dir/build.make test/CMakeFiles/inconferenceTests.dir/utilsTests.cpp.s
+.PHONY : utilsTests.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -266,6 +293,9 @@ help:
 	@echo "... SharedBufferTests.o"
 	@echo "... SharedBufferTests.i"
 	@echo "... SharedBufferTests.s"
+	@echo "... utilsTests.o"
+	@echo "... utilsTests.i"
+	@echo "... utilsTests.s"
 .PHONY : help
 
 

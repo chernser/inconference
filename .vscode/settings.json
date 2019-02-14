@@ -60,6 +60,7 @@
         "streambuf": "cpp",
         "vector": "cpp",
         "list": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "optional": "cpp"
     }
 }

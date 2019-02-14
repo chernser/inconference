@@ -9,31 +9,20 @@
 #include <mutex>
 #include <queue>
 #include <vector>
+#include <list>
+#include <iostream>
+#include <string>
 
 namespace LibUtils
 {
 
 using namespace std;
 
-template <typename TTask>
-class BasicTaskDistributor
+template <typename TValue>
+struct TValueHolder
 {
-
-  public:
-    BasicTaskDistributor(uint8_t maxWorkers, uint16_t maxQueueSize);
-    ~BasicTaskDistributor();
-    void submitTask(shared_ptr<TTask> task);
-    shared_ptr<TTask> pullNextTask(uint8_t workerIndex);
-
-  private:
-    std::vector<std::recursive_mutex> workersQueueMutexes;
-    std::vector<std::deque<std::shared_ptr<TTask>>> workersQueues;
-
-  protected:
-    uint8_t numOfWorkers;
-    std::vector<std::recursive_mutex>::iterator mutexIter;
-    std::vector<std::deque<std::shared_ptr<TTask>>> queueIter;
-
+    bool hasValue;
+    TValue task;
 };
 
 /**
@@ -47,23 +36,91 @@ class TaskDistributor
 {
 
   public:
+
     /**
      * Creates instance of distributer able to handle defined number of workers. 
      * 
      */
-    TaskDistributor(uint8_t workers, uint16_t maxQueueSize);
-    virtual ~TaskDistributor();
+    // TaskDistributor(uint8_t workers, uint16_t maxQueueSize);
 
-    void submitTask(shared_ptr<TTask> task);
-    shared_ptr<TTask> pullNextTask(uint8_t workerIndex);
+    virtual ~TaskDistributor(){};
+
+    /**
+     * Submits tasks to workers queue (shared or individual)
+     */
+    virtual void submitTask(TTask task) = 0;
+
+    /**
+     * Pulls task from queue for worker with specified index.
+     * 
+     */
+    virtual TValueHolder<TTask> pullNextTask(uint8_t workerIndex) = 0;
+};
+
+template <typename TTask>
+class BasicTaskDistributor : public TaskDistributor<TTask>
+{
+
+  public:
+    explicit BasicTaskDistributor(uint8_t maxWorkers, uint16_t maxQueueSize)
+        : workersQueueMutexes(0), workersQueues(0),
+          numOfWorkers(maxWorkers), mutexIter(), queueIter()
+    {
+        for (uint8_t i = 0; i < maxWorkers; i++)
+        {
+            workersQueueMutexes.push_back(std::shared_ptr<std::recursive_mutex>(new std::recursive_mutex()));
+            workersQueues.push_back(std::shared_ptr<std::deque<TTask>>(new std::deque<TTask>()));
+        }
+
+        mutexIter = workersQueueMutexes.begin();
+        queueIter = workersQueues.begin();
+    }
+
+    virtual ~BasicTaskDistributor(){};
+
+    void submitTask(TTask task)
+    {
+        std::recursive_mutex *mutex = (*mutexIter).get();
+        if (mutexIter == workersQueueMutexes.end() || mutex == NULL)
+        {
+            mutexIter = workersQueueMutexes.begin();
+            queueIter = workersQueues.begin();
+            mutex = (*mutexIter).get();
+        }
+
+        std::lock_guard<std::recursive_mutex> lock(*mutex);
+
+        auto taskQueue = (*queueIter).get();
+        taskQueue->push_front(task);
+        mutexIter++;
+        queueIter++;
+    }
+
+    TValueHolder<TTask> pullNextTask(uint8_t workerIndex)
+    {
+        std::lock_guard<std::recursive_mutex> lock(*workersQueueMutexes.at(workerIndex));
+        auto *taskQueue = workersQueues.at(workerIndex).get();
+        if (taskQueue->size() > 0)
+        {
+            TTask task = taskQueue->back();
+            taskQueue->pop_back();
+            return TValueHolder<TTask> {true, task};
+        }
+        else
+        {
+            return TValueHolder<TTask> {false};
+        }
+    }
 
   private:
-    uint8_t maxWorkers;
-    uint16_t queueLen;
+    std::vector<std::shared_ptr<std::recursive_mutex>> workersQueueMutexes;
+    std::vector<std::shared_ptr<std::deque<TTask>>> workersQueues;
 
-    atomic_int8_t lastWorker;
+  protected:
+    uint8_t numOfWorkers;
 
-    TTask **queues;
+    typename std::vector<std::shared_ptr<std::deque<TTask>>>::iterator queueIter;
+    std::vector<std::shared_ptr<std::recursive_mutex>>::iterator mutexIter;
 };
 
 } // namespace LibUtils

@@ -15,6 +15,7 @@ add_executable(inconferenceTests
 	SharedBufferTests.cpp
 	FDSelectorTests.cpp
 	MediatorTestHelper.h
-	GenericServerTests.cpp)
+	GenericServerTests.cpp
+	utilsTests.cpp)
 
 target_link_libraries(inconferenceTests inconference gtest gtest_main event_core )

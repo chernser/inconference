@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "/Users/chernser/proj/inconference/test/inconferenceTests",
-            "args": [],
+            "args": ["--gtest_filter=basic_task_destributer.*"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [
