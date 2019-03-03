@@ -49,3 +49,6 @@ test/CMakeFiles/
 test/CTestTestfile.cmake
 test/cmake_install.cmake
 test/inconferenceTests
+test/googletest-build/
+test/googletest-src/
+test/googletest-download/
