@@ -42,12 +42,14 @@ int connect_client()
 
     struct sockaddr_in sockAddr;
     memset(&sockAddr, 0, sizeof(sockAddr));
-    sockAddr.sin_family = AF_INET;
-    sockAddr.sin_len = (__uint8_t ) sizeof(struct sockaddr_in);
+    // if def unix 
+    // sockAddr.sin_family = AF_INET;
+    // sockAddr.sin_len = (__uint8_t ) sizeof(struct sockaddr_in);
+    // endif unix 
     sockAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     sockAddr.sin_port = htons(65002);
 
-    err = ::connect(sock, (sockaddr *) &sockAddr, sockAddr.sin_len);
+    err = ::connect(sock, (sockaddr *) &sockAddr, sizeof(sockaddr_in));
     if (err == -1)
     {
         if (errno == EINPROGRESS)

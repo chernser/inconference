@@ -25,8 +25,12 @@ namespace Mediation
 
     void Mediator::addEndpoint(shared_ptr<Endpoints::Endpoint> endpoint)
     {
-        endpoints.insert(std::make_pair(endpoint->getName(), new EndpointHolder(
-        { endpoint, bufferPool->borrow(), bufferPool->borrow() })));
+        auto holder = new EndpointHolder;
+        holder->endpoint = endpoint;
+        holder->inputBufferA = bufferPool->borrow();
+        holder->inputBufferB = bufferPool->borrow();
+
+        endpoints.insert({endpoint->getName(), std::shared_ptr<EndpointHolder>(holder)});
     }
 
     void Mediator::removeEndpoint(shared_ptr<Endpoints::Endpoint> endpoint)

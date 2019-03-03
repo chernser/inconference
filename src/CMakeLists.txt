@@ -1,7 +1,4 @@
 
-add_compile_options("-std=c++11")
-set(CMAKE_CXX_STANDARD 11)
-
 
 add_library(inconference SHARED
 			 library.cpp library.h 			  

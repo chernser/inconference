@@ -59,7 +59,7 @@ class    FDSelector
     protected:
         struct FdWrapper
         {
-            event *event;
+            struct event *event;
             std::function<void(FileDescriptor fd, FDEventType)> stateCallback;
         };
         unordered_map<FileDescriptor, shared_ptr<struct FdWrapper>> fdEventMap;

@@ -61,7 +61,13 @@
         "vector": "cpp",
         "list": "cpp",
         "queue": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "forward_list": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "map": "cpp",
+        "sstream": "cpp",
+        "unordered_set": "cpp"
     },
     "editor.tokenColorCustomizations": {
         "textMateRules": [

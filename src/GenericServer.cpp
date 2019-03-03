@@ -6,7 +6,8 @@
  */
 
 #include <sys/socket.h>
-#include <sys/sockio.h>
+// #include <sys/sockio.h>
+#include <string.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
@@ -64,9 +65,11 @@ namespace GenServer
         }
 
         struct sockaddr_in sockAddr;
-        memset(&sockAddr, 0, sizeof(struct sockaddr_in));
-        sockAddr.sin_len = (__uint8_t ) sizeof(struct sockaddr_in);
-        sockAddr.sin_family = AF_INET;
+        ::memset(&sockAddr, 0, sizeof(struct sockaddr_in));
+// #ifdef UNIX 
+        // sockAddr.sin_len = (__uint8_t ) sizeof(struct sockaddr_in);        
+        // sockAddr.sin_family = AF_INET;
+// #endif        
         sockAddr.sin_port = htons(port);
         sockAddr.sin_addr.s_addr = INADDR_ANY; // inet_addr(address.c_str());
 
@@ -90,7 +93,7 @@ namespace GenServer
     uint16_t GenericServer::acceptConnection(FileDescriptor *fd)
     {
         struct sockaddr_in clientSockAddr;
-        memset(&clientSockAddr, 0, sizeof(struct sockaddr_in));
+        ::memset(&clientSockAddr, 0, sizeof(struct sockaddr_in));
         unsigned int size = 0;
         int clientSocket = accept(serverSocket,
                 (struct sockaddr *) &clientSockAddr, &size);

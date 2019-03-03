@@ -10,6 +10,7 @@
 #include <stack>
 #include <unistd.h>
 #include <cstdint>
+#include <cstring>
 
 #include <iostream>
 
@@ -87,7 +88,7 @@ namespace Memory
 
         void copy(uint8_t *dest)
         {
-            memcpy(dest, buffer, size);
+            std::memcpy(dest, buffer, size);
         }
 
         void write(uint8_t byte)
@@ -100,7 +101,7 @@ namespace Memory
 
         void copyFrom(uint8_t *src, uint32_t offset, uint32_t len)
         {
-            memcpy(buffer, src + offset, len);
+            std::memcpy(buffer, src + offset, len);
         }
 
         uint32_t capacity()
