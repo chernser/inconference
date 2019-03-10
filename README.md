@@ -27,3 +27,31 @@ Features
 *   Tunable chain of pre-processors and interceptors 
 
 
+How to run Linux based DEV ENV 
+-------------------------------
+
+Go to 'devcontainer' folder and build docker container with commond ```docker build . -t dev_iconf```
+
+Then return to project directory and execute to build update Makefile and make project: 
+
+```docker run --rm -it -v "$PWD":/proj -w /proj dev_iconf    cmake . && make```
+
+
+Execute next command to tests: 
+
+```
+    docker run --rm -it -v "$PWD":/proj -w /proj -e LD_LIBRARY_PATH=/proj/src dev_iconf    \
+        ./test/inconferenceTests --help
+```
+
+Execute next command to make: 
+```
+    docker run --rm -it -v "$PWD":/proj -w /proj -e LD_LIBRARY_PATH=/proj/src dev_iconf   \
+        make
+```
+
+Execute next command to run valgrind:
+```
+    docker run --rm -it -v "$PWD":/proj -w /proj -e LD_LIBRARY_PATH=/proj/src dev_iconf   \
+        valgrind ./test/inconferenceTests 
+```

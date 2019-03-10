@@ -13,6 +13,7 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <thread>
 
 #include "gtest/gtest.h"
 
@@ -78,9 +79,10 @@ TEST(single_threaded_server, full_cycle)
 
     printf("Connecting client on server side\n");
     int acceptedFd = -1;
-    while (server->acceptConnection(&acceptedFd) == GENSERV_EMPTY_RESULT)
+    int attempts = 10;
+    while (server->acceptConnection(&acceptedFd) == GENSERV_EMPTY_RESULT && attempts > 0)
     {
-
+        --attempts;        
     }
 
     //    ASSERT_EQ(GENSERV_OK, server.acceptConnection(&acceptedFd));

@@ -15,11 +15,10 @@ using namespace Mediation;
 using namespace Endpoints;
 using namespace Memory;
 
-auto bufferFactory = shared_ptr<FixedSizeBufferPool>(
+TEST(MediatorTest, addEndpoint_removeEndpoint) {
+    auto bufferFactory = shared_ptr<FixedSizeBufferPool>(
         new FixedSizeBufferPool(DEFAULT_BUFFER_SIZE, 10, DEFAULT_BUFFER_SIZE * 100));
 
-
-TEST(MediatorTest, addEndpoint_removeEndpoint) {
     auto mediator = std::unique_ptr<Mediator>(new Mediator(bufferFactory));
 
     auto endpoint2 = shared_ptr<Endpoint>(new Endpoint("endpoint2", true));
@@ -48,6 +47,9 @@ TEST(MediatorTest, addEndpoint_removeEndpoint) {
 
 
 TEST(MediatorTest, doIteration_localEndpoints) {
+    auto bufferFactory = shared_ptr<FixedSizeBufferPool>(
+        new FixedSizeBufferPool(DEFAULT_BUFFER_SIZE, 10, DEFAULT_BUFFER_SIZE * 100));
+
     auto mediator = std::unique_ptr<Mediator>(new Mediator(bufferFactory));
 
     auto endpoint1 = shared_ptr<SimpleTestEndpoint>(new SimpleTestEndpoint("ep1"));
@@ -66,7 +68,7 @@ TEST(MediatorTest, doIteration_localEndpoints) {
     GTEST_ASSERT_EQ(2, mediator->getNumberOfEndpoints());
 
     uint32_t data_size = 5;
-    auto test_data_1 = shared_ptr<uint8_t>(new uint8_t[data_size]{0xAE, 0xAA, 0x44, 0xAA, 0xBB});
+    auto test_data_1 = shared_ptr<uint8_t[]>(new uint8_t[data_size]{0xAE, 0xAA, 0x44, 0xAA, 0xBB});
 
     endpoint1->setReadyData(test_data_1, data_size);
 
