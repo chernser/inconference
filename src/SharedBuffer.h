@@ -72,11 +72,14 @@ namespace Memory
     public:
         LocalBuffer(uint32_t size): size(size)
         {
-            buffer = new uint8_t[size];
+            // buffer = new uint8_t[size];
+            buffer = (uint8_t *)malloc(size);
         }
 
         ~ LocalBuffer()
         {
+            free(buffer);
+            buffer == NULL;
         }
 
         uint8_t read()

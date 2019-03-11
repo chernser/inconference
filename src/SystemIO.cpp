@@ -39,6 +39,19 @@ namespace SysIO
         }
     }
 
+    LibEventFDSelector::~LibEventFDSelector()
+    {
+        for (auto iter = fdEventMap.begin(); iter != fdEventMap.end(); iter++)
+        {
+            event_free(iter->second->event);
+            iter->second->event = NULL;
+        }
+
+        event_base_free(eventBase);
+        eventBase = NULL;
+    }
+
+
     void LibEventFDSelector::addFileDescriptor(FileDescriptor fd,
             std::function<onFDStateChangeCallback> cb)
     {

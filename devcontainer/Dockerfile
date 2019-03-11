@@ -12,6 +12,5 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4
     ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
     cmake --version
 
-# RUN apt-get update && \
-#     apt-get -y install cmake valgrind valgrind-dbg valgrind-mpi valkyrie less nano 
-    
+RUN apt-get update && \
+    apt-get -y install cmake valgrind valgrind-dbg valgrind-mpi valkyrie less nano     

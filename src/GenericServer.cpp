@@ -32,8 +32,8 @@ namespace GenServer
     }
 
     GenericServer::~GenericServer()
-    {
-        // TODO Auto-generated destructor stub
+    {        
+        this->selector= NULL;
     }
 
     uint16_t GenericServer::start()

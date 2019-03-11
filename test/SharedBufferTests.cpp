@@ -53,7 +53,7 @@ TEST(release, allCases) {
     auto bufferPool = shared_ptr<FixedSizeBufferPool>(new FixedSizeBufferPool(pageSize, 0, pageSize * 3));
 
     {
-        auto *buffers = new shared_ptr<Buffer>[3];
+        std::shared_ptr<Buffer> buffers[3];
         for (int i = 0; i < 3; i++) {
             buffers[i] = bufferPool->borrow();
         }

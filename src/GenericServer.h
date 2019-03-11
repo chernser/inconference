@@ -58,7 +58,7 @@ namespace GenServer
         GenericServer() {};
         GenericServer(string address, uint16_t port, shared_ptr<FDSelector> selector);
         virtual ~GenericServer();
-
+        
         /**
          * Creates server socket and does binding.
          * After calling this function - server is ready to accept connections

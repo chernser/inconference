@@ -23,8 +23,7 @@ public:
     }
 
     void otherSideReady(shared_ptr<Endpoint> otherEndpoint, shared_ptr<Buffer> buffer, uint32_t readyBytes) override {
-        // this->inBuffer = shared_ptr<uint8_t[]>(new uint8_t[buffer->capacity()]);
-        this->inBuffer = shared_ptr<uint8_t[]>(new uint8_t[100]);
+        this->inBuffer = shared_ptr<uint8_t[]>(new uint8_t[buffer->capacity()]);
         buffer->copy((uint8_t*)this->inBuffer.get());
         this->readBytes = readyBytes;
     }

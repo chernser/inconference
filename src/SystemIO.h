@@ -43,14 +43,9 @@ class    FDSelector
         {
         }
 
-        virtual ~FDSelector()
-        {
-
-        }
-
+        virtual ~FDSelector() {};
         void notifyFDStateChanged(FileDescriptor fd, FDEventType eventType);
 
-//        virtual void addFileDescriptor(FileDescriptor fd, std::function<void(FileDescriptor fd, FDEventType)> cb) = 0;
         virtual void addFileDescriptor(FileDescriptor fd,
                 std::function<onFDStateChangeCallback> cb) = 0;
         virtual void removeFileDescriptor(FileDescriptor fd) = 0;
@@ -70,14 +65,12 @@ class    FDSelector
 
     public:
         LibEventFDSelector() :
-                eventBase(event_base_new())
+                eventBase(NULL)
         {
+            eventBase = event_base_new();
         }
 
-        virtual ~LibEventFDSelector()
-        {
-            event_base_free(eventBase);
-        }
+        virtual ~LibEventFDSelector();
 
         void addFileDescriptor(FileDescriptor fd,
                 std::function<onFDStateChangeCallback> cb) override;
