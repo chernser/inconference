@@ -48,7 +48,6 @@ namespace Mediation
 
     void Mediator::doIteration()
     {
-
         if (endpoints.size() == 0)
         {
             return;
