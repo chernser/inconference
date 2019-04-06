@@ -15,6 +15,8 @@
 #include <fcntl.h>
 #include <thread>
 
+#include <unistd.h>
+
 #include "gtest/gtest.h"
 
 #include "../src/GenericServer.h"
@@ -44,11 +46,12 @@ int connect_client()
     struct sockaddr_in sockAddr;
     memset(&sockAddr, 0, sizeof(sockAddr));
     // if def unix 
-    // sockAddr.sin_family = AF_INET;
-    // sockAddr.sin_len = (__uint8_t ) sizeof(struct sockaddr_in);
+        // sockAddr.sin_len = (__uint8_t ) sizeof(struct sockaddr_in);
     // endif unix 
-    sockAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    sockAddr.sin_port = htons(65002);
+    
+    inet_pton(AF_INET, "127.0.0.1", &sockAddr.sin_addr);
+    sockAddr.sin_port = htons(9090);
+    sockAddr.sin_family = AF_INET;
 
     err = ::connect(sock, (sockaddr *) &sockAddr, sizeof(sockaddr_in));
     if (err == -1)
@@ -58,33 +61,31 @@ int connect_client()
             return sock;
         }
         return -1;
-    }
-
+    } 
     return sock;
 }
 
 TEST(single_threaded_server, full_cycle)
 {
     auto fdSelector = std::shared_ptr<FDSelector>(new LibEventFDSelector());
-    auto server = std::unique_ptr<GenericServer>(new GenericServer("127.0.0.1", 65002, fdSelector));
+    auto server = std::unique_ptr<GenericServer>(new GenericServer("127.0.0.1", 9090, fdSelector));
 
     ASSERT_EQ(GENSERV_OK, server->start());
 
-    printf("Server started\n");
     int clientFd1 = connect_client();
-    printf("Client fd: %d\n", clientFd1);
     ASSERT_NE(-1, clientFd1);
 
-    printf("Connecting client on server side\n");
     int acceptedFd = -1;
     int attempts = 10;
-    while (server->acceptConnection(&acceptedFd) == GENSERV_EMPTY_RESULT && attempts > 0)
+    int acceptResult = server->acceptConnection(&acceptedFd);
+    while (acceptResult == GENSERV_EMPTY_RESULT && attempts > 0)
     {
-        --attempts;        
+        acceptResult = server->acceptConnection(&acceptedFd);
+        ASSERT_NE(GENSERV_INTERNAL_ERR, acceptResult);
+        --attempts;
+        usleep(1000 * 1000 * 10);
     }
 
-    //    ASSERT_EQ(GENSERV_OK, server.acceptConnection(&acceptedFd));
-    printf("Accepted fd: %d\n", acceptedFd);
     ASSERT_NE(-1, acceptedFd);
 
     const char *msg = "hello";
@@ -93,10 +94,7 @@ TEST(single_threaded_server, full_cycle)
     fdSelector->wakeUp();
     int readableFd = -1;    
     server->nextReadableClient(&readableFd);
-    printf("Readable fd: %d\n", readableFd);
     ASSERT_EQ(readableFd, acceptedFd);
     ASSERT_EQ(GENSERV_OK, server->stop());
-
-    printf("Test done\n");
 }
 
