@@ -218,7 +218,7 @@ gtest_main: cmake_check_build_system
 
 # fast build rule for target.
 gtest_main/fast:
-	$(MAKE) -f test/googletest-build/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make test/googletest-build/googlemock/gtest/CMakeFiles/gtest_main.dir/build
+	$(MAKE) -f test/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make test/googletest-build/googletest/CMakeFiles/gtest_main.dir/build
 .PHONY : gtest_main/fast
 
 #=============================================================================
@@ -231,7 +231,7 @@ gtest: cmake_check_build_system
 
 # fast build rule for target.
 gtest/fast:
-	$(MAKE) -f test/googletest-build/googlemock/gtest/CMakeFiles/gtest.dir/build.make test/googletest-build/googlemock/gtest/CMakeFiles/gtest.dir/build
+	$(MAKE) -f test/googletest-build/googletest/CMakeFiles/gtest.dir/build.make test/googletest-build/googletest/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
 # Help Target

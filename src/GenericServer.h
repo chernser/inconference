@@ -72,9 +72,11 @@ namespace GenServer
         uint16_t acceptConnection(FileDescriptor *fd);
 
         /**
-         * Returns next readable client socket.
-         *
+         * Returns next readable client socket. Each call to this method 
+         * alters the state of the server.
+         * 
          * @param fd - pointer to memory into which client descriptor will be written
+         * @return GENSERV_EMPTY_RESULT when no readable file descriptors.
          * @synchronized
          */
         uint16_t nextReadableClient(FileDescriptor *fd);

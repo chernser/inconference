@@ -24,6 +24,8 @@
 using namespace GenServer;
 using namespace SysIO;
 
+void assertReadableFdIs(int expected, GenericServer *server ) ;
+
 int connect_client()
 {
     int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -91,10 +93,28 @@ TEST(single_threaded_server, full_cycle)
     const char *msg = "hello";
     write(clientFd1, (void*) msg, 5);
 
-    fdSelector->wakeUp();
-    int readableFd = -1;    
-    server->nextReadableClient(&readableFd);
-    ASSERT_EQ(readableFd, acceptedFd);
+    fdSelector->wakeUp();    
+    assertReadableFdIs(acceptedFd, server.get());
+
+    {
+        fdSelector->wakeUp();
+        int readableFd = -1;    
+        ASSERT_EQ(GENSERV_EMPTY_RESULT, server->nextReadableClient(&readableFd));
+
+    }
+
+    {
+        int writableFd = -1;
+        server->nextWritableClient(&writableFd);
+    }    
+
     ASSERT_EQ(GENSERV_OK, server->stop());
 }
 
+
+inline void assertReadableFdIs(int expected, GenericServer *server ) 
+{
+    int readableFd = -1;        
+    server->nextReadableClient(&readableFd);
+    ASSERT_EQ(readableFd, expected);
+}

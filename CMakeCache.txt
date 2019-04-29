@@ -295,7 +295,7 @@ googletest-distribution_BINARY_DIR:STATIC=/proj/test/googletest-build
 googletest-distribution_SOURCE_DIR:STATIC=/proj/test/googletest-src
 
 //Value Computed by CMake
-gtest_BINARY_DIR:STATIC=/proj/test/googletest-build/googlemock/gtest
+gtest_BINARY_DIR:STATIC=/proj/test/googletest-build/googletest
 
 //Value Computed by CMake
 gtest_SOURCE_DIR:STATIC=/proj/test/googletest-src/googletest
@@ -517,7 +517,7 @@ FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 PYTHON_EXECUTABLE-ADVANCED:INTERNAL=1
 //CMAKE_INSTALL_PREFIX during last run
 _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=/usr/local
-generated_dir:INTERNAL=/proj/test/googletest-build/googlemock/gtest/generated
+generated_dir:INTERNAL=/proj/test/googletest-build/googletest/generated
 //ADVANCED property for variable: gmock_build_tests
 gmock_build_tests-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: gtest_build_samples
